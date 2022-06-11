@@ -1,12 +1,19 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useRef } from 'react';
-
+import { auth } from '../firebase';
 const Login = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const PasswordConfirm = useRef(null);
+
   const signIn = (e) => {
     e.preventDefault();
-    alert('loging in');
+    signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
+      .then((user) => {
+        console.log('user from login', user);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
   return (
     <div className='min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
@@ -41,6 +48,7 @@ const Login = () => {
                   type='email'
                   autoComplete='email'
                   required
+                  ref={emailRef}
                   className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                 />
               </div>
@@ -57,6 +65,7 @@ const Login = () => {
                   type='password'
                   autoComplete='current-password'
                   required
+                  ref={passwordRef}
                   className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                 />
               </div>
